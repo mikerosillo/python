@@ -1,3 +1,5 @@
+# I got this solution from a tutorial 
+# which i fully understood
 def rockConflict(q):#function to check for duplicates if there is a duplicate
 #in the array q it means we have a rockConflict
     if len(q)!=len(set(q)):#so we make a copy of q with only
@@ -8,8 +10,9 @@ def rockConflict(q):#function to check for duplicates if there is a duplicate
         return True
     else:
         return False
-#to see if we have a diagonalConflict we check position againts position
-#starting from left to rigth
+#to see if we have a diagonalConflict we check column position againts colum position
+#starting from left to rigth and substracting sub i if both results are equals
+# it means there is a diagonalConflict
 def diagonalConflict(q):
     for col in range(7,0,-1):
         for i in range(col):
