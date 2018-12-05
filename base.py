@@ -1,11 +1,159 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 
 
-engine = create_engine('postgresql://usr:pass@localhost:5432/sqlalchemy')
 
-Session = sessionmaker(bind=engine)
+solutions = []
+
+def rowConflict(q):
+    if len(q)!=len(set(q)):
+        #print (set(q))
+        return True
+    else:
+        return False
 
 
-Base = declarative_base()
+
+def diagonalConflict4(q):
+    for col in range(3,0,-1):
+        for i in range(col):
+            if col-i==abs(q[col]-q[i]):
+                return True
+    return False
+
+
+def diagonalConflict8(q):
+    for col in range(7,0,-1):
+        for i in range(col):
+            if col-i==abs(q[col]-q[i]):
+                return True
+    return False
+
+def diagonalConflict5(q):
+    for col in range(4,0,-1):
+        for i in range(col):
+            if col-i==abs(q[col]-q[i]):
+                return True
+    return False
+
+def diagonalConflict6(q):
+    for col in range(5,0,-1):
+        for i in range(col):
+            if col-i==abs(q[col]-q[i]):
+                return True
+    return False
+
+def diagonalConflict7(q):
+    for col in range(6,0,-1):
+        for i in range(col):
+            if col-i==abs(q[col]-q[i]):
+                return True
+    return False
+
+def diagonalConflict9(q):
+    for col in range(8,0,-1):
+        for i in range(col):
+            if col-i==abs(q[col]-q[i]):
+                return True
+    return False
+
+
+def findSolution(n):
+    count=0
+    if n == 4:
+        for i0 in range(n):
+            for i1 in range(n):
+                for i2 in range(n):
+                    for i3 in range(n):
+                        q=[i0,i1,i2,i3]
+                        if rowConflict(q) or diagonalConflict4(q):
+                            continue
+                        count+=1
+                        solutions.append(q)
+    elif n == 8:
+        count=0
+        for i0 in range(n):
+            for i1 in range(n):
+                for i2 in range(n):
+                    for i3 in range(n):
+                        for i4 in range(n):
+                            for i5 in range(n):
+                                for i6 in range(n):
+                                    for i7 in range(n):
+                                        q=[i0,i1,i2,i3,i4,i5,i6,i7]
+                                        if rowConflict(q) or diagonalConflict8(q):
+                                            continue
+                                        count+=1
+                                        solutions.append(q)
+    elif n == 5:
+        count=0
+        for i0 in range(n):
+            for i1 in range(n):
+                for i2 in range(n):
+                    for i3 in range(n):
+                        for i4 in range(n):
+                            q=[i0,i1,i2,i3,i4]
+                            if rowConflict(q) or diagonalConflict5(q):
+                                continue
+                            count+=1
+                            solutions.append(q)
+    elif n == 6:
+        count=0
+        for i0 in range(n):
+            for i1 in range(n):
+                for i2 in range(n):
+                    for i3 in range(n):
+                        for i4 in range(n):
+                            for i5 in range(n):
+                                q=[i0,i1,i2,i3,i4,i5]
+                                if rowConflict(q) or diagonalConflict6(q):
+                                    continue
+                                count+=1
+                                solutions.append(q)
+    elif n == 7:
+        count=0
+        for i0 in range(n):
+            for i1 in range(n):
+                for i2 in range(n):
+                    for i3 in range(n):
+                        for i4 in range(n):
+                            for i5 in range(n):
+                                for i6 in range(n):
+                                    q=[i0,i1,i2,i3,i4,i5,i6]
+                                    if rowConflict(q) or diagonalConflict7(q):
+                                        continue
+                                    count+=1
+                                    solutions.append(q)
+    elif n == 9:
+        count=0
+        for i0 in range(n):
+            for i1 in range(n):
+                for i2 in range(n):
+                    for i3 in range(n):
+                        for i4 in range(n):
+                            for i5 in range(n):
+                                for i6 in range(n):
+                                    for i7 in range(n):
+                                        for i8 in range(n):
+                                            q=[i0,i1,i2,i3,i4,i5,i6,i7,i8]
+                                            if rowConflict(q) or diagonalConflict9(q):
+                                                continue
+                                            count+=1
+                                            solutions.append(q)
+
+
+
+findSolution(4)
+
+db = create_engine('postgresql+psycopg2://postgres:cohort2@localhost:5432/queens')
+
+connection = db.connect()
+
+try:
+    result = connection.execute("CREATE TABLE solutions (n INT, sol VARCHAR(255))")
+except:
+    1 + 1
+    # have to put code here for Python to allow us to silently catch exception
+
+for i in solutions:
+    print("INSERT INTO solutions (n, sol) VALUES (" + str(n) + ",'" + ",".join([str(x) for x in i]) + "')")
+    connection.execute("INSERT INTO solutions (n, sol) VALUES (" + str(n) + ",'" + ",".join([str(x) for x in i]) + "')")
