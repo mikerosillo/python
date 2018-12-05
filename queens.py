@@ -6,6 +6,7 @@ def rowConflict(q):
         return False
 
 
+
 def diagonalConflict4(q):
     for col in range(3,0,-1):
         for i in range(col):
@@ -136,4 +137,4 @@ def findSolution(n):
 
 
 
-findSolution(9)  
+findSolution(8)  
